@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 4050;
 app.get("/", (req, res) => {
   res.send(`Hey it's working !!`);
 });
-app.listen(PORT, () => console.log(`server up and running at  ${PORT}`));
+app.listen(PORT,'159.89.161.168', () => console.log(`server up and running at  ${PORT}`));
 
 const mongoose = require("mongoose");
 const cors = require("cors");
