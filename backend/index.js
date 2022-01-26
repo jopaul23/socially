@@ -21,11 +21,8 @@ dotenv.config();
 mongoose.connect(
   process.env.DB_CONNECT,
   {
-    useCreateIndex: true,
-    useFindAndModify: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    autoIndex: true,
   },
   () => console.log("connected to db")
 );

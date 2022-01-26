@@ -12,55 +12,55 @@ const { appendFile } = require("fs")
 
 const postSchema = Joi.object({
     caption : Joi.string(),
-    file_type : Joi.number().required(),
-    file : Joi.string(),
         owner_id : Joi.string().required(),
     owner_name : Joi.string().required(),
     owner_profile  :Joi.string()
 })
 
-router.post('/add-post',verify,async (req,res)=>{
-    const post = new Posts({
-        caption : req.body.caption,
-        file_type : req.body.file_type,
-        file : req.body.file,
-        owner_id : req.body.owner_id,
-        owner_name : req.body.owner_name,
-        likes : [],
-        owner_profile: req.body.owner_profile
-    })
+// router.post('/add-post',verify,async (req,res)=>{
+//     const post = new Posts({
+//         caption : req.body.caption,
+//         file_type : req.body.file_type,
+//         file : req.body.file,
+//         owner_id : req.body.owner_id,
+//         owner_name : req.body.owner_name,
+//         likes : [],
+//         owner_profile: req.body.owner_profile
+//     })
     
-    try{
-        const {error} =  await postSchema.validateAsync(req.body)
-        if(error) return res.status(400).send(error.details[0].message);
-        else{
-           const savedPost = await post.save()
-           User.findByIdAndUpdate({ _id:req.body.owner_id },{ $addToSet: { "posts": savedPost.id } },(err,result)=>{
-               if(err){
-                   return res.status(500).send({message :"error while updating",error:err.message})
-               }
-               else{
-                   return res.status(200).send({message:"successfully updated"})
-               }
-           })
-        }
-    }catch(error){
-        return res.status(500).send({message :"error while uploading",error:error.message})
-    }
-})
+//     try{
+//         const {error} =  await postSchema.validateAsync(req.body)
+//         if(error) return res.status(400).send(error.details[0].message);
+//         else{
+//            const savedPost = await post.save()
+//            User.findByIdAndUpdate({ _id:req.body.owner_id },{ $addToSet: { "posts": savedPost.id } },(err,result)=>{
+//                if(err){
+//                    return res.status(500).send({message :"error while updating",error:err.message})
+//                }
+//                else{
+//                    return res.status(200).send({message:"successfully updated"})
+//                }
+//            })
+//         }
+//     }catch(error){
+//         return res.status(500).send({message :"error while uploading",error:error.message})
+//     }
+// })
 
-
+imageCount = 0
 //set storage engine
 const storage = multer.diskStorage({
     destination:"./public/uploads/",
     filename:function (req,file,cb){
-        cb(null,file.fieldname+"-"+ Date.now()+path.extname(file.originalname))
+        imageCount++;
+        console.log(imageCount)
+        cb(null,file.fieldname+"-"+ imageCount+path.extname(file.originalname))
     }
 })
 
 //check file type
 function checkFiletype(file,cb){
-    const file_types = /jpeg|jpg|png/
+    const file_types = /jpeg|jpg|png|jfif/
 
     const extname = file_types.test(path.extname(file.originalname).toLowerCase())
 
@@ -82,16 +82,45 @@ const upload =  multer({
     }
 }).single('image')
 
-router.post('/upload-img',(req,res)=>{
+router.post('/upload-img', (req,res)=>{
     upload(req,res,(err)=>{
         if(err){
-            res.send({error:err}).status(400)
+          return  res.send({error:err})
 
         }else{
             console.log(req.file)
-            res.send('test')
+            const post = new Posts({
+                caption : req.body.caption,
+                file :req.file.fieldname+"-"+ imageCount+path.extname(req.file.originalname) ,
+                owner_id : req.body.owner_id,
+                owner_name : req.body.owner_name,
+                likes : [],
+                owner_profile: req.body.owner_profile
+            })
+            
+            try {
+                const {error} =  postSchema.validateAsync(req.body)
+                if(error) return res.status(400).send(error.details[0].message);
+                else{
+                   post.save().then((value)=>{
+                    User.findByIdAndUpdate({ _id:req.body.owner_id },{ $addToSet: { "posts": value.id } },(err,result)=>{
+                        if(err){
+                            return res.status(500).send({message :"error while updating",error:err.message})
+                        }
+                        else{
+                            return res.status(200).send({message:"successfully updated"})
+                        }
+                    })
+                   })
+                   
+                }
+            }catch(error){
+                return res.status(500).send({message :"error while uploading",error:error.message})
+            }
         }
     })
+
+    
 })
 router.use(express.static('public/uploads'));
 

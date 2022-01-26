@@ -6,10 +6,6 @@ const postSchema = mongoose.Schema({
         type : String,
         max : 2000    
     },
-    file_type : {
-        type : Number,//1-image ,2-video
-        required : true,
-    },
     file: {
         type : String,
     },
