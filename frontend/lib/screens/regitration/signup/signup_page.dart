@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:internship_socialmedia/api/api.dart';
+import 'package:internship_socialmedia/api/register_api.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
 import 'package:internship_socialmedia/screens/home/home.dart';
 import 'package:internship_socialmedia/screens/regitration/login/signin_page.dart';
@@ -104,7 +104,7 @@ class _SignupPageState extends State<SignupPage> {
                                   icon: "assets/svg/warning.svg",
                                   color: toastYellow);
                             } else {
-                              Api.register(
+                              RegisterApi.register(
                                       email: email,
                                       password: password,
                                       name: name)

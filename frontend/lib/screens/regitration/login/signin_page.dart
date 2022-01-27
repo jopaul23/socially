@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:internship_socialmedia/api/api.dart';
+import 'package:internship_socialmedia/api/register_api.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
 import 'package:internship_socialmedia/screens/home/home.dart';
 import 'package:internship_socialmedia/screens/regitration/login/login_form.dart';
@@ -101,7 +101,8 @@ class _SigninPageState extends State<SigninPage> {
                                   icon: "assets/svg/warning.svg",
                                   color: toastYellow);
                             } else {
-                              Api.login(email: email, password: password)
+                              RegisterApi.login(
+                                      email: email, password: password)
                                   .then((result) {
                                 if (result["status"] == 200) {
                                   showToast(

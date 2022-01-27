@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:internship_socialmedia/api/error_handling.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Api {
+class RegisterApi {
   static const url = "http://159.89.161.168:4050";
 
   static Future<Map<String, dynamic>> login(
@@ -39,6 +39,7 @@ class Api {
         prefs.setString('auth-token', response.data["token"]);
         prefs.setString('email', response.data["email"]);
         prefs.setString('user_id', response.data["id"]);
+        prefs.setString('user_name', response.data["name"]);
       }
     } catch (error) {
       print(error);
@@ -77,6 +78,7 @@ class Api {
         prefs.setString('auth-token', response.data["token"]);
         prefs.setString('email', response.data["email"]);
         prefs.setString('user_id', response.data["id"]);
+        prefs.setString('user_name', response.data["name"]);
       }
     } catch (error) {
       print(error);

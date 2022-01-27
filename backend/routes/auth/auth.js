@@ -45,6 +45,7 @@ router.post("/register", async (req, res) => {
         id: savedUser.id,
         name: savedUser.name,
         email: savedUser.email,
+        
       });
     }
   } catch (error) {
@@ -85,6 +86,7 @@ router.post("/login", async (req, res) => {
           token : token,
           email : fetchedUser.email,
           id: fetchedUser.id,
+          name:fetchedUser.name,
           message :"login successfull"
       }).status(200);
     }
