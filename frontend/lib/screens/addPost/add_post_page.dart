@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internship_socialmedia/api/post_api.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
+import 'package:internship_socialmedia/controller/posts_controller.dart';
 import 'package:internship_socialmedia/screens/addPost/caption_constainer.dart';
+import 'package:internship_socialmedia/screens/home/home.dart';
 import 'package:internship_socialmedia/widget/buttons/primary_btn.dart';
 import 'package:internship_socialmedia/widget/textfield_custom.dart';
 import 'package:path_provider/path_provider.dart';
@@ -25,7 +27,7 @@ class _AddPostPageState extends State<AddPostPage> {
   String path = '';
   XFile? image;
   File? storedImage;
-
+  PostController postController = Get.find<PostController>();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -105,17 +107,14 @@ class _AddPostPageState extends State<AddPostPage> {
               ),
               PrimaryButton(
                   onpressed: () async {
-                    final Directory applicationDirectory =
-                        await getApplicationDocumentsDirectory();
-                    String applicationPath = applicationDirectory.path;
+                    postController.addPost(
+                        image,
+                        captionKey.currentState!.textEditingController.text,
+                        context);
 
-                    File compresseedImage = await testCompressAndGetFile(
-                        File(image!.path), '$applicationPath/${image!.name}');
-                    PostApi.uploadImage(
-                        XFile('$applicationPath/${image!.name}'),
-                        captionKey.currentState!.textEditingController.text);
                     print(
                         "caption ${captionKey.currentState!.textEditingController.text}");
+                    Get.to(() => const HomePage());
                   },
                   text: "post")
             ],
@@ -136,20 +135,5 @@ class _AddPostPageState extends State<AddPostPage> {
     });
 
 // copy the file to a new path
-  }
-
-  Future<File> testCompressAndGetFile(File file, String targetPath) async {
-    var result = await FlutterImageCompress.compressAndGetFile(
-      file.absolute.path,
-      targetPath,
-      minWidth: 720,
-      minHeight: 480,
-      quality: 50,
-    );
-
-    print(file.lengthSync());
-    print(result!.lengthSync());
-
-    return result;
   }
 }

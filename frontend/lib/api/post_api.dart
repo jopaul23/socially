@@ -8,7 +8,8 @@ import 'package:internship_socialmedia/models/post_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostApi {
-  static uploadImage(XFile image, String caption) async {
+  static Future<Map<String, dynamic>> uploadImage(
+      XFile image, String caption) async {
     const String mainUrl = "http://159.89.161.168:4050";
 
     String filePath = image.path;
@@ -20,6 +21,7 @@ class PostApi {
     String owner_id = prefs.getString("user_id").toString();
     String token = prefs.getString("auth-token").toString();
 
+    Map<String, dynamic> map = {"status": 500, "message": "failed to post"};
     try {
       FormData formData = FormData.fromMap({
         "caption": caption,
@@ -31,9 +33,14 @@ class PostApi {
           data: formData, options: Options(headers: {"auth-token": token}));
       print("file upload response $response");
       print(response.statusCode);
+      map = {
+        "status": response.statusCode,
+        "message": response.data["message"]
+      };
     } catch (error) {
       print("error");
     }
+    return map;
   }
 
   static Future<List<PostModel>> getPosts() async {
