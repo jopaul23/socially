@@ -3,11 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:internship_socialmedia/api/api.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
+import 'package:internship_socialmedia/screens/home/home.dart';
 import 'package:internship_socialmedia/screens/regitration/login/signin_page.dart';
 import 'package:internship_socialmedia/screens/regitration/signup/signup_form.dart';
 import 'package:internship_socialmedia/widget/buttons/primary_btn.dart';
 import 'package:internship_socialmedia/widget/buttons/secondary_btn.dart';
+import 'package:internship_socialmedia/widget/toast.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({Key? key}) : super(key: key);
@@ -86,6 +89,51 @@ class _SignupPageState extends State<SignupPage> {
                       : PrimaryButton(
                           onpressed: () {
                             print("pressed");
+                            String email = formKey
+                                .currentState!.emailKey.currentState!.text;
+                            String password = formKey
+                                .currentState!.passwordKey.currentState!.text;
+                            String name = formKey
+                                .currentState!.nameKey.currentState!.text;
+
+                            if (name == '' || email == '' || password == '') {
+                              showToast(
+                                  context: context,
+                                  title: "all field required",
+                                  description: "",
+                                  icon: "assets/svg/warning.svg",
+                                  color: toastYellow);
+                            } else {
+                              Api.register(
+                                      email: email,
+                                      password: password,
+                                      name: name)
+                                  .then((result) {
+                                if (result["status"] == 200) {
+                                  showToast(
+                                      context: context,
+                                      title: result["message"].toString(),
+                                      description: "",
+                                      icon: "assets/svg/tick.svg",
+                                      color: primaryBlue);
+                                  Get.off(() => const HomePage());
+                                } else if (result["status"] == 400) {
+                                  showToast(
+                                      context: context,
+                                      title: result["message"].toString(),
+                                      description: "",
+                                      icon: "assets/svg/warning.svg",
+                                      color: toastYellow);
+                                } else {
+                                  showToast(
+                                      context: context,
+                                      title: "unexpected error occured",
+                                      description: "",
+                                      icon: "assets/svg/warning.svg",
+                                      color: toastYellow);
+                                }
+                              });
+                            }
                           },
                           text: "Signup"),
                   SizedBox(

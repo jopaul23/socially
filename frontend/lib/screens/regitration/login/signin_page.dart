@@ -93,29 +93,42 @@ class _SigninPageState extends State<SigninPage> {
                                 .currentState!.emailKey.currentState!.text;
                             String password = formKey
                                 .currentState!.passwordKey.currentState!.text;
+                            if (email == '' || password == '') {
+                              showToast(
+                                  context: context,
+                                  title: "all fields are required",
+                                  description: "",
+                                  icon: "assets/svg/warning.svg",
+                                  color: toastYellow);
+                            } else {
+                              Api.login(email: email, password: password)
+                                  .then((result) {
+                                if (result["status"] == 200) {
+                                  showToast(
+                                      context: context,
+                                      title: result["message"].toString(),
+                                      description: "",
+                                      icon: "assets/svg/tick.svg",
+                                      color: primaryBlue);
+                                  Get.off(() => const HomePage());
+                                } else if (result["status"] == 400) {
+                                  showToast(
+                                      context: context,
+                                      title: result["message"].toString(),
+                                      description: "",
+                                      icon: "assets/svg/warning.svg",
+                                      color: toastYellow);
+                                } else {
+                                  showToast(
+                                      context: context,
+                                      title: "unexpected error occured",
+                                      description: "",
+                                      icon: "assets/svg/warning.svg",
+                                      color: toastYellow);
+                                }
+                              });
+                            }
                             print("email $email\npassword $password");
-                            Api.login(email: email, password: password)
-                                .then((result) {
-                              if (result["status"] == 200) {
-                                showToast(
-                                    context: context,
-                                    title: result["message"].toString(),
-                                    description: "",
-                                    icon: "assets/svg/tick.svg",
-                                    color: primaryBlue);
-                                Get.off(() => const HomePage());
-                              } else if (result["status"] == 400) {
-                                showToast(
-                                    context: context,
-                                    title: result["message"].toString(),
-                                    description: "",
-                                    icon: "assets/svg/warning.svg",
-                                    color: toastYellow);
-                              } else {
-                                print("else");
-                                print(result);
-                              }
-                            });
                           },
                           text: "login"),
                   SizedBox(
