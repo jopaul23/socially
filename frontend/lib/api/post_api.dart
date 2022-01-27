@@ -1,13 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:internship_socialmedia/models/post_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PostApi {
   static uploadImage(XFile image, String caption) async {
-    final String mainUrl = "http://159.89.161.168:4050";
+    const String mainUrl = "http://159.89.161.168:4050";
 
     String filePath = image.path;
     String fileName = image.name;
@@ -32,5 +34,25 @@ class PostApi {
     } catch (error) {
       print("error");
     }
+  }
+
+  static Future<List<PostModel>> getPosts() async {
+    const String url = "http://159.89.161.168:4050/api/posts/get";
+    List<PostModel> postList = [];
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      print("Successfull");
+      final List datas = jsonDecode(response.body);
+      print("decoded successfuly");
+      datas.forEach((element) {
+        print(element);
+        postList.add(PostModel.fromMap(map: element));
+      });
+      print("list appended sucessfully");
+      return postList;
+    } else if (response.statusCode == 500) {
+      print("couldnt fetch quote");
+    }
+    return postList;
   }
 }

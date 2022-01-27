@@ -96,7 +96,7 @@ router.get("/get", async (req, res) => {
       .catch((err) => {
         console.log(err);
       });
-    res.send(result).status(200);
+    res.json(result).status(200);
   } catch (error) {
     console.log(error);
   }

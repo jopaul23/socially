@@ -7,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internship_socialmedia/api/post_api.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
-import 'package:internship_socialmedia/controller/add_post_controller.dart';
-import 'package:internship_socialmedia/controller/add_post_controller.dart';
 import 'package:internship_socialmedia/screens/addPost/caption_constainer.dart';
 import 'package:internship_socialmedia/widget/buttons/primary_btn.dart';
 import 'package:internship_socialmedia/widget/textfield_custom.dart';
@@ -23,7 +21,6 @@ class AddPostPage extends StatefulWidget {
 }
 
 class _AddPostPageState extends State<AddPostPage> {
-  AddPostController addPostController = Get.put(AddPostController());
   final captionKey = GlobalKey<CaptionContainerState>();
   String path = '';
   XFile? image;
