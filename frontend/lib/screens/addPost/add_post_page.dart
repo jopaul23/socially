@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -106,8 +107,15 @@ class _AddPostPageState extends State<AddPostPage> {
                 height: 50,
               ),
               PrimaryButton(
-                  onpressed: () {
-                    PostApi.uploadImage(image!,
+                  onpressed: () async {
+                    final Directory applicationDirectory =
+                        await getApplicationDocumentsDirectory();
+                    String applicationPath = applicationDirectory.path;
+
+                    File compresseedImage = await testCompressAndGetFile(
+                        File(image!.path), '$applicationPath/${image!.name}');
+                    PostApi.uploadImage(
+                        XFile('$applicationPath/${image!.name}'),
                         captionKey.currentState!.textEditingController.text);
                     print(
                         "caption ${captionKey.currentState!.textEditingController.text}");
@@ -123,11 +131,28 @@ class _AddPostPageState extends State<AddPostPage> {
   imageAdd() async {
     final ImagePicker _picker = ImagePicker();
     // Pick an image
+
     image = await _picker.pickImage(source: ImageSource.gallery);
+
     setState(() {
       storedImage = File(image!.path);
     });
 
 // copy the file to a new path
+  }
+
+  Future<File> testCompressAndGetFile(File file, String targetPath) async {
+    var result = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      targetPath,
+      minWidth: 720,
+      minHeight: 480,
+      quality: 50,
+    );
+
+    print(file.lengthSync());
+    print(result!.lengthSync());
+
+    return result;
   }
 }
