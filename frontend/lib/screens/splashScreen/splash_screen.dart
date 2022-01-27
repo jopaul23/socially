@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     email = prefs.getString("email");
     if (email != null) {
-      Get.off(() => const HomePage());
+      Get.off(() => const SigninPage());
       print("email exists");
     } else {
       Get.off(() => const SigninPage());

@@ -3,13 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:internship_socialmedia/api/api.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
+import 'package:internship_socialmedia/screens/home/home.dart';
 import 'package:internship_socialmedia/screens/regitration/login/login_form.dart';
+import 'package:internship_socialmedia/screens/regitration/signup/signup_form.dart';
 import 'package:internship_socialmedia/screens/regitration/signup/signup_page.dart';
 import 'package:internship_socialmedia/widget/buttons/primary_btn.dart';
 import 'package:internship_socialmedia/widget/buttons/secondary_btn.dart';
-import 'package:internship_socialmedia/widget/textfield_custom.dart';
+import 'package:internship_socialmedia/widget/toast.dart';
 
 class SigninPage extends StatefulWidget {
   const SigninPage({Key? key}) : super(key: key);
@@ -21,6 +23,7 @@ class SigninPage extends StatefulWidget {
 class _SigninPageState extends State<SigninPage> {
   @override
   bool isLoading = false;
+  final formKey = GlobalKey<LoginFormState>();
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
@@ -52,7 +55,7 @@ class _SigninPageState extends State<SigninPage> {
                           ),
                         ),
                         Text(
-                          "Enter your email to continue",
+                          "all fields arre required",
                           style: TextStyle(
                             fontSize: 10,
                             color: textColor1,
@@ -62,7 +65,10 @@ class _SigninPageState extends State<SigninPage> {
                       ],
                     ),
                   ),
-                  LoginForm(size: size),
+                  LoginForm(
+                    key: formKey,
+                    size: size,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -83,8 +89,35 @@ class _SigninPageState extends State<SigninPage> {
                       : PrimaryButton(
                           onpressed: () {
                             print("pressed");
+                            String email = formKey
+                                .currentState!.emailKey.currentState!.text;
+                            String password = formKey
+                                .currentState!.passwordKey.currentState!.text;
+                            print("email $email\npassword $password");
+                            Api.login(email: email, password: password)
+                                .then((result) {
+                              if (result["status"] == 200) {
+                                showToast(
+                                    context: context,
+                                    title: result["message"].toString(),
+                                    description: "",
+                                    icon: "assets/svg/tick.svg",
+                                    color: primaryBlue);
+                                Get.off(() => const HomePage());
+                              } else if (result["status"] == 400) {
+                                showToast(
+                                    context: context,
+                                    title: result["message"].toString(),
+                                    description: "",
+                                    icon: "assets/svg/warning.svg",
+                                    color: toastYellow);
+                              } else {
+                                print("else");
+                                print(result);
+                              }
+                            });
                           },
-                          text: "continue"),
+                          text: "login"),
                   SizedBox(
                     child: Column(
                       children: [
@@ -93,7 +126,7 @@ class _SigninPageState extends State<SigninPage> {
                           style: TextStyle(fontSize: 10.sp),
                         ),
                         SecondaryBtn(
-                            onpressed: () => Get.to(() => const SignupPage()),
+                            onpressed: () => Get.off(() => const SignupPage()),
                             text: "sign up"),
                       ],
                     ),

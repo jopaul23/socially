@@ -16,7 +16,7 @@ router.post("/register", async (req, res) => {
   const emailExists = await User.findOne({ email: req.body.email });
 
   if (emailExists) {
-    res.status(400).send("email already exists");
+    res.status(400).send({message : "email already exists"});
     return;
   }
 
@@ -34,7 +34,7 @@ router.post("/register", async (req, res) => {
     const { error } = await registerSchema.validateAsync(req.body);
 
     if (error) {
-      res.status(400).send(error.details[0].message);
+      res.status(400).send({message : error.details[0].message});
       return;
     } else {
       const savedUser = await user.save();
@@ -58,10 +58,11 @@ const loginShema = Joi.object({
 });
 
 router.post("/login", async (req, res) => {
+  console.log(req.body)
   const fetchedUser = await User.findOne({ email: req.body.email });
 
   if (!fetchedUser) {
-    return res.status(400).send("email not registered");
+    return res.status(400).send({message:"email not registered"});
   }
 
   const validPassword = await bycrpt.compare(
@@ -69,12 +70,12 @@ router.post("/login", async (req, res) => {
     fetchedUser.password
   );
   if (!validPassword) {
-    return res.status(400).send("incorrect password");
+    return res.status(400).send({message:"incorrect password"});
   }
 
   try {
     const { error } = await loginShema.validateAsync(req.body);
-    if (error) return res.status(400).send(error.details[0].message);
+    if (error) return res.status(400).send({"message":error.details[0].message});
     else {
       const token = jwt.sign(
         { _id: fetchedUser._id },
