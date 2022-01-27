@@ -24,7 +24,6 @@ class PostController extends GetxController {
     Map<String, dynamic> map = await PostApi.uploadImage(
         XFile('$applicationPath/${image.name}'), caption);
     if (map["status"] == 200) {
-      posting = false;
       showToast(
           context: context,
           title: "successfully posted",
@@ -32,7 +31,6 @@ class PostController extends GetxController {
           color: primaryBlue,
           icon: "assets/svg/tick.svg");
     } else {
-      posting = false;
       showToast(
           context: context,
           title: map["message"],
@@ -40,6 +38,7 @@ class PostController extends GetxController {
           color: toastYellow,
           icon: "assets/svg/warning.svg");
     }
+    posting = false;
     getAllPosts();
     update();
   }

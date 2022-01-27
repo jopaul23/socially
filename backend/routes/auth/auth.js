@@ -95,4 +95,18 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
+router.post("/get", async (req, res) => {
+  try {
+    const result = await User.findById({_id:req.body._id})
+      .catch((err) => {
+        console.log(err);
+      });
+    return res.json(result).status(200);
+  } catch (error) {
+    console.log(error);
+  }
+  return res.send({"message":"failed"}).status(500)
+});
+
 module.exports = router;
