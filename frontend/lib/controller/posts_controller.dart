@@ -45,7 +45,7 @@ class PostController extends GetxController {
 
   getAllPosts() async {
     List<Map<String, dynamic>> mapList = [];
-    List<PostModel> list = await PostApi.getPosts();
+    List<PostModel> list = await PostApi.getPosts({});
     postsList = list;
     print("lenght of post list ${postsList.length}");
     update();

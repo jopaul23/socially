@@ -88,15 +88,15 @@ const upload = multer({
   },
 }).single("image");
 
-router.get("/get", async (req, res) => {
+router.post("/get", async (req, res) => {
   try {
     const result = await Posts.find(req.body)
       .sort({ publish_time: -1 })
-      .limit(30)
+      .limit(100)
       .catch((err) => {
         console.log(err);
       });
-    res.json(result).status(200);
+     res.json(result).status(200);
   } catch (error) {
     console.log(error);
   }

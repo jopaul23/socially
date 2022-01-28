@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
+import 'package:internship_socialmedia/controller/user_controller.dart';
 import 'package:internship_socialmedia/models/post_model.dart';
+import 'package:internship_socialmedia/models/user_model.dart';
+import 'package:internship_socialmedia/screens/profile/profile_page.dart';
 
 class PostContainer extends StatelessWidget {
   const PostContainer({
@@ -27,9 +31,19 @@ class PostContainer extends StatelessWidget {
         children: [
           Row(
             children: [
-              const CircleAvatar(
-                backgroundImage: NetworkImage(
-                  "https://m.media-amazon.com/images/I/41jLBhDISxL._SY355_.jpg",
+              GestureDetector(
+                onTap: () async {
+                  UserContrller userContrller = Get.find<UserContrller>();
+                  UserModel user =
+                      await userContrller.getUserDetails(id: post.userId);
+                  Get.to(() => ProfilePage(
+                        user: user,
+                      ));
+                },
+                child: const CircleAvatar(
+                  backgroundImage: NetworkImage(
+                    "https://m.media-amazon.com/images/I/41jLBhDISxL._SY355_.jpg",
+                  ),
                 ),
               ),
               const SizedBox(

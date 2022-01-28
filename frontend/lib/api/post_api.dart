@@ -43,10 +43,10 @@ class PostApi {
     return map;
   }
 
-  static Future<List<PostModel>> getPosts() async {
+  static Future<List<PostModel>> getPosts(Map<String, String> filter) async {
     const String url = "http://159.89.161.168:4050/api/posts/get";
     List<PostModel> postList = [];
-    final response = await http.get(Uri.parse(url));
+    final response = await http.post(Uri.parse(url), body: json.encode(filter));
     if (response.statusCode == 200) {
       print("Successfull");
       final List datas = jsonDecode(response.body);

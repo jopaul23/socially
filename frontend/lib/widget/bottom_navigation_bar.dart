@@ -20,42 +20,45 @@ class _BottomNavigationBarCustomState extends State<BottomNavigationBarCustom> {
   @override
   Widget build(BuildContext context) {
     List pages = [const HomePage(), const AddPostPage(), const ProfilePage()];
-    return BottomNavigationBar(
-      backgroundColor: white,
-      currentIndex: widget.currentIndex,
-      onTap: (newIndex) {
-        setState(() {
-          if (newIndex != widget.currentIndex) {
-            Get.to(pages[newIndex]);
-          }
-        });
-      },
-      items: [
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            "assets/svg/home.svg",
-            height: 28,
-            color: widget.currentIndex == 0 ? primaryBlue : textColor1,
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(defaultPadding),
+      child: BottomNavigationBar(
+        backgroundColor: white,
+        currentIndex: widget.currentIndex,
+        onTap: (newIndex) {
+          setState(() {
+            if (newIndex != widget.currentIndex) {
+              Get.off(pages[newIndex]);
+            }
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              "assets/svg/home.svg",
+              height: 28,
+              color: widget.currentIndex == 0 ? primaryBlue : textColor1,
+            ),
+            label: "home",
           ),
-          label: "home",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(
-            Icons.add_rounded,
-            size: 30,
-            color: widget.currentIndex == 1 ? primaryBlue : textColor1,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_rounded,
+              size: 30,
+              color: widget.currentIndex == 1 ? primaryBlue : textColor1,
+            ),
+            label: "add post",
           ),
-          label: "add post",
-        ),
-        BottomNavigationBarItem(
-          icon: SvgPicture.asset(
-            "assets/svg/user.svg",
-            height: 30,
-            color: widget.currentIndex == 1 ? primaryBlue : textColor1,
+          BottomNavigationBarItem(
+            icon: SvgPicture.asset(
+              "assets/svg/user.svg",
+              height: 30,
+              color: widget.currentIndex == 2 ? primaryBlue : textColor1,
+            ),
+            label: "account",
           ),
-          label: "account",
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
