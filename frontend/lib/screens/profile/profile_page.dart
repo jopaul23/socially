@@ -131,31 +131,33 @@ class _ProfilePageState extends State<ProfilePage> {
                       ],
                     ),
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
-                      onTap: () async {
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        prefs.remove("auth-token");
-                        prefs.remove("user_name");
-                        prefs.remove("email");
+                  isOwner
+                      ? Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () async {
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.remove("auth-token");
+                              prefs.remove("user_name");
+                              prefs.remove("email");
 
-                        prefs.remove("user_id");
-                        Get.off(() => SigninPage());
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: primaryBlue,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Text(
-                          "logout",
-                          style: TextStyle(color: white, fontSize: 12.sp),
-                        ),
-                      ),
-                    ),
-                  )
+                              prefs.remove("user_id");
+                              Get.off(() => SigninPage());
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                  color: primaryBlue,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text(
+                                "logout",
+                                style: TextStyle(color: white, fontSize: 12.sp),
+                              ),
+                            ),
+                          ),
+                        )
+                      : const SizedBox()
                 ],
               ),
               const SizedBox(
