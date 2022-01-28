@@ -6,11 +6,20 @@ import 'package:internship_socialmedia/constants/constants.dart';
 import 'package:internship_socialmedia/models/post_model.dart';
 import 'package:internship_socialmedia/models/user_model.dart';
 import 'package:internship_socialmedia/widget/toast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserContrller extends GetxController {
   List<PostModel> profilePosts = [];
 
   UserModel? owner;
+
+  setOwner() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? ownerId = prefs.getString("user_id");
+    owner = await getUserDetails(id: ownerId!);
+    update();
+  }
+
   Future<UserModel> getUserDetails({required String id}) async {
     UserModel user = await UserApi.getUserDetails(id);
     print("----------------email----------");
@@ -39,21 +48,6 @@ class UserContrller extends GetxController {
     Map<String, String> map = {"id": id, "profile_url": profile_url};
 
     await UserApi.updateProfile(map);
-    // if (status == 200) {
-    //   showToast(
-    //       context: context,
-    //       title: "profile updated successfully",
-    //       description: "",
-    //       icon: "assets/svg/tick.svg",
-    //       color: primaryBlue);
-    // } else {
-    //   showToast(
-    //       context: context,
-    //       title: "profile update failed",
-    //       description: "",
-    //       icon: "assets/svg/warning.svg",
-    //       color: toastYellow);
-    // }
 
     getUserDetails(id: id);
     update();

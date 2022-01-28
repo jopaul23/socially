@@ -27,7 +27,7 @@ class _AddPostPageState extends State<AddPostPage> {
   String path = '';
   XFile? image;
   File? storedImage;
-  PostController postController = Get.find<PostController>();
+  PostController postController = Get.put(PostController());
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -50,7 +50,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 height: 20,
               ),
               const Text(
-                "add medicine",
+                "add post",
                 style: TextStyle(
                   color: textColor1,
                   fontSize: 20,
