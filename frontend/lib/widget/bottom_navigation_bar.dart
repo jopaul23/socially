@@ -28,7 +28,11 @@ class _BottomNavigationBarCustomState extends State<BottomNavigationBarCustom> {
         onTap: (newIndex) {
           setState(() {
             if (newIndex != widget.currentIndex) {
-              Get.off(pages[newIndex]);
+              if (newIndex == 1) {
+                Get.to(pages[newIndex]);
+              } else {
+                Get.off(pages[newIndex]);
+              }
             }
           });
         },

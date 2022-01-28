@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:internship_socialmedia/models/user_model.dart';
+import 'package:internship_socialmedia/widget/toast.dart';
 
 class UserApi {
   static Future<UserModel> getUserDetails(String userId) async {
@@ -23,7 +24,8 @@ class UserApi {
         "_id": response.data["_id"],
         "name": response.data["name"],
         "email": response.data["email"],
-        "posts": postList
+        "posts": postList,
+        "profile": response.data["profile"]
       };
       print("decoded useer successfuly ");
       UserModel user = UserModel.fromMap(map: data);
@@ -31,6 +33,16 @@ class UserApi {
     } else if (response.statusCode == 500) {
       print("couldnt fetch quote");
     }
-    return UserModel(email: "", name: "", posts: [], id: "");
+    return UserModel(email: "", name: "", posts: [], id: "", profile: "");
+  }
+
+  static updateProfile(Map<String, String> map) async {
+    const String url = "http://159.89.161.168:4050/api/users/update-profile";
+    Response response = await Dio().post(url, data: map);
+    if (response.statusCode == 200) {
+      return 200;
+    } else {
+      return 400;
+    }
   }
 }

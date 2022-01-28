@@ -51,38 +51,73 @@ class _ProfilePageState extends State<ProfilePage> {
           child: Column(
             children: [
               Container(
-                height: 250,
+                height: 150,
                 width: double.infinity,
                 decoration: BoxDecoration(
                     color: const Color(0xffF6F6F6),
                     borderRadius: BorderRadius.circular(defaultPadding)),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                child: Row(
                   children: [
-                    const CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        "https://m.media-amazon.com/images/I/41jLBhDISxL._SY355_.jpg",
+                    const SizedBox(
+                      width: defaultPadding,
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(user.profile),
+                            radius: 35,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: primaryBlue,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: const Icon(
+                              Icons.add_a_photo_rounded,
+                              size: 20,
+                              color: white,
+                            ),
+                          )
+                        ],
                       ),
-                      radius: 60,
                     ),
                     const SizedBox(
-                      height: 10,
+                      width: defaultPadding,
                     ),
-                    Text(
-                      user.name,
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w600,
-                        color: primaryBlue,
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          user.name,
+                          style: TextStyle(
+                            fontSize: 18.sp,
+                            fontWeight: FontWeight.w600,
+                            color: primaryBlue,
+                          ),
+                        ),
+                        Text(user.email)
+                      ],
                     ),
-                    Text(user.email)
                   ],
                 ),
               ),
+              Text(
+                "your posts",
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: textColor1,
+                ),
+              ),
               const SizedBox(
-                height: 10,
+                height: 5,
               ),
               GetBuilder<UserContrller>(builder: (context) {
                 postList = userContrller.profilePosts;

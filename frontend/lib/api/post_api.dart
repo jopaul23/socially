@@ -44,14 +44,19 @@ class PostApi {
   }
 
   static Future<List<PostModel>> getPosts(Map<String, String> filter) async {
+    print("------------------------filter-------------");
+    print(filter);
+    print(json.encode(filter));
+    print("------------------------filter-------------");
+
     const String url = "http://159.89.161.168:4050/api/posts/get";
     List<PostModel> postList = [];
-    final response = await http.post(Uri.parse(url), body: json.encode(filter));
+    final response = await Dio().post(url, data: filter);
     if (response.statusCode == 200) {
       print("Successfull");
-      final List datas = jsonDecode(response.body);
+      // final List datas = jsonDecode(response.data);
       print("decoded successfuly");
-      datas.forEach((element) {
+      response.data.forEach((element) {
         print(element);
         postList.add(PostModel.fromMap(map: element));
       });

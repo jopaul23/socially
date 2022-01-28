@@ -90,6 +90,7 @@ const upload = multer({
 
 router.post("/get", async (req, res) => {
   try {
+    console.log(req.body)
     const result = await Posts.find(req.body)
       .sort({ publish_time: -1 })
       .limit(100)

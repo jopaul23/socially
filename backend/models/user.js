@@ -1,3 +1,4 @@
+const { number } = require('@hapi/joi');
 const mongoose = require('mongoose')
 
 const userSchema = mongoose.Schema({
@@ -22,6 +23,10 @@ const userSchema = mongoose.Schema({
     date : {
         type : Date,
         default  :Date.now(),
+    },
+    profile : {
+        type : String,
+        default  :"https://m.media-amazon.com/images/I/41jLBhDISxL._SY355_.jpg",
     },
     posts :[String]
 });

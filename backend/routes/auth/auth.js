@@ -109,4 +109,25 @@ router.post("/get", async (req, res) => {
   return res.send({"message":"failed"}).status(500)
 });
 
+
+router.post('/update-profile',(req,res)=>{
+  User.findByIdAndUpdate(
+    { _id: req.body.id },
+    { $set: { profile: req.body.profile_url } },
+    (err, result) => {
+      if (err) {
+        return res
+          .status(500)
+          .send({
+            message: "error while updating",
+            error: err.message,
+          });
+      } else {
+        return res
+          .status(200)
+          .send({ message: "successfully updated" });
+      }
+    }
+  );
+})
 module.exports = router;
