@@ -118,6 +118,7 @@ router.post("/upload-img", (req, res) => {
           path.extname(req.file.originalname),
         owner_id: req.body.owner_id,
         owner_name: req.body.owner_name,
+        owner_profile:req.body.owner_profile,
         likes: [],
         owner_profile: req.body.owner_profile,
       });

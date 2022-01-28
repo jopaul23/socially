@@ -19,6 +19,12 @@ class UserContrller extends GetxController {
     return user;
   }
 
+  static Future<UserModel> getUserDetailsWithoutPosts(
+      {required String id}) async {
+    UserModel user = await UserApi.getUserDetails(id);
+    return user;
+  }
+
   getPosts(String userId) async {
     Map<String, String> filter = {"owner_id": userId};
     List<PostModel> list = await PostApi.getPosts(filter);
@@ -32,21 +38,24 @@ class UserContrller extends GetxController {
       required BuildContext context}) async {
     Map<String, String> map = {"id": id, "profile_url": profile_url};
 
-    var status = await UserApi.updateProfile(map);
-    if (status == 200) {
-      showToast(
-          context: context,
-          title: "profile updated successfully",
-          description: "",
-          icon: "assets/svg/tick.svg",
-          color: primaryBlue);
-    } else {
-      showToast(
-          context: context,
-          title: "profile update failed",
-          description: "",
-          icon: "assets/svg/warning.svg",
-          color: toastYellow);
-    }
+    await UserApi.updateProfile(map);
+    // if (status == 200) {
+    //   showToast(
+    //       context: context,
+    //       title: "profile updated successfully",
+    //       description: "",
+    //       icon: "assets/svg/tick.svg",
+    //       color: primaryBlue);
+    // } else {
+    //   showToast(
+    //       context: context,
+    //       title: "profile update failed",
+    //       description: "",
+    //       icon: "assets/svg/warning.svg",
+    //       color: toastYellow);
+    // }
+
+    getUserDetails(id: id);
+    update();
   }
 }

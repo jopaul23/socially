@@ -7,7 +7,7 @@ import 'package:internship_socialmedia/models/post_model.dart';
 import 'package:internship_socialmedia/models/user_model.dart';
 import 'package:internship_socialmedia/screens/profile/profile_page.dart';
 
-class PostContainer extends StatelessWidget {
+class PostContainer extends StatefulWidget {
   const PostContainer({
     Key? key,
     required this.post,
@@ -15,6 +15,11 @@ class PostContainer extends StatelessWidget {
 
   final PostModel post;
 
+  @override
+  State<PostContainer> createState() => _PostContainerState();
+}
+
+class _PostContainerState extends State<PostContainer> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -34,15 +39,15 @@ class PostContainer extends StatelessWidget {
               GestureDetector(
                 onTap: () async {
                   UserContrller userContrller = Get.find<UserContrller>();
-                  UserModel user =
-                      await userContrller.getUserDetails(id: post.userId);
+                  UserModel user = await userContrller.getUserDetails(
+                      id: widget.post.userId);
                   Get.to(() => ProfilePage(
                         user: user,
                       ));
                 },
-                child: const CircleAvatar(
+                child: CircleAvatar(
                   backgroundImage: NetworkImage(
-                    "https://m.media-amazon.com/images/I/41jLBhDISxL._SY355_.jpg",
+                    widget.post.profile,
                   ),
                 ),
               ),
@@ -50,7 +55,7 @@ class PostContainer extends StatelessWidget {
                 width: 20,
               ),
               Text(
-                post.userName,
+                widget.post.userName,
                 style: TextStyle(
                     color: primaryBlue,
                     fontSize: 16.sp,
@@ -62,7 +67,7 @@ class PostContainer extends StatelessWidget {
             height: 10,
           ),
           Text(
-            " " + post.caption,
+            " " + widget.post.caption,
             style: TextStyle(color: textColor1, fontSize: 14.sp),
           ),
           const SizedBox(
@@ -71,7 +76,7 @@ class PostContainer extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(defaultPadding),
             child: Image.network(
-              "http://159.89.161.168:4050/api/posts/" + post.url,
+              "http://159.89.161.168:4050/api/posts/" + widget.post.url,
               width: double.infinity,
               fit: BoxFit.fill,
             ),

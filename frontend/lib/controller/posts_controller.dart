@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:internship_socialmedia/constants/constants.dart';
+import 'package:internship_socialmedia/models/user_model.dart';
 import 'package:internship_socialmedia/widget/toast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -14,10 +15,15 @@ class PostController extends GetxController {
   List<PostModel> postsList = [];
   bool posting = false;
 
-  addPost(XFile? image, String caption, BuildContext context) async {
+  addPost(
+    XFile? image,
+    String caption,
+    BuildContext context,
+  ) async {
     final Directory applicationDirectory =
         await getApplicationDocumentsDirectory();
     String applicationPath = applicationDirectory.path;
+
     posting = true;
     File compresseedImage = await testCompressAndGetFile(
         File(image!.path), '$applicationPath/${image.name}');
