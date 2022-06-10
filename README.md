@@ -1,8 +1,7 @@
 <h1>Socially</h1>
 
 <h2>Social meedia application in which useers can post and view posts.</h2>
-
-<h2>Screenshots</h2>
+<br>
 
 <h3>Signin Page</h3>
 <img src="https://user-images.githubusercontent.com/60638127/173048741-3398a730-00e0-4f09-9944-02f5249e2055.jpg" width="200" height="400" />
@@ -24,5 +23,3 @@
 
 <h3>view post</h3>
 <img src="https://user-images.githubusercontent.com/60638127/173051917-c19df31f-0b33-4002-892e-2a59e9def5ed.jpg" width="200" height="400" />
-
-
