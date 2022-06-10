@@ -23,8 +23,6 @@
 <img src="https://user-images.githubusercontent.com/60638127/173051002-8d5e9ec6-e6dc-43a7-a2eb-59ca9d6154aa.jpg" width="200" height="400" />
 
 <h3>view post</h3>
-<img src="https://user-images.githubusercontent.com/60638127/173051560-15a6e442-f68c-40c2-a7df-e6808b5b0040.jpg" width="200" height="400" />
-
-
+<img src="https://user-images.githubusercontent.com/60638127/173051917-c19df31f-0b33-4002-892e-2a59e9def5ed.jpg" width="200" height="400" />
 
 
